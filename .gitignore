@@ -15,6 +15,7 @@ yarn-debug.log*
 yarn-error.log*
 
 *.log
+yarn.lock
 
 # local config
 config.file.local

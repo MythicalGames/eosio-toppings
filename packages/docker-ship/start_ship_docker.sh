@@ -22,12 +22,15 @@ if [ "$(docker ps -q -f status=exited -f name=^$POSTGRES_CONTAINER_NAME$)" ]; th
 fi
 
 script="./resume_history_tool.sh"
+ascript="resume_history_tool.sh"
 
 # check if container does not already exists
 if [ ! "$(docker ps -q -f name=^$POSTGRES_CONTAINER_NAME$)" ]; then
   if [ ! "$(docker volume ls --format '{{.Name}}' -f name=^$POSTGRES_VOLUME_NAME$)" ]; then
     #If the volume is created then call start_history_tool script
     script="./start_history_tool.sh"
+    ascript="start_history_tool.sh"
+
     # recreate fresh volume
     docker volume create --name=$POSTGRES_VOLUME_NAME
 
@@ -50,13 +53,21 @@ if [ ! "$(docker ps -q -f name=^$SHIP_CONTAINER_NAME$)" ]; then
   # start the blockchain docker
   # --link is to get access to other container
   echo "running state history plugin docker container"
+
   docker run -it --name $SHIP_CONTAINER_NAME -d \
   --net host \
   $SHIP_IMAGE_NAME \
-  "$script"
+  $script
 
   docker cp config.file.local $SHIP_CONTAINER_NAME:/root/history-tools/
   docker cp config.file $SHIP_CONTAINER_NAME:/root/history-tools/
+
+  docker cp scripts/resume_history_tool.sh $SHIP_CONTAINER_NAME:/root/history-tools/resume_history_tool.sh
+  docker cp scripts/start_history_tool.sh $SHIP_CONTAINER_NAME:/root/history-tools/start_history_tool.sh
+#
+#  docker restart $SHIP_CONTAINER_NAME
+#  docker exec -d $SHIP_CONTAINER_NAME /root/history-tools/$ascript &
+
 else
     echo "docker is already running"
 fi
