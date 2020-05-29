@@ -49,6 +49,40 @@ declare namespace Postgres {
     endpoint: string
   }
 
+  interface GetContractRows {
+    table: string,
+    scope: string,
+    code: string
+  }
+
+  interface ContractRowsResults {
+    block_num: string,
+    present: boolean,
+    code: string,
+    scope: string,
+    table: string,
+    primary_key: string,
+    payer: string,
+    value: ActionData
+  }
+
+  interface GetContractTables {
+    table: string,
+    endpoint: string
+  }
+
+  interface ContractTableResults {
+    block_num: string,
+    present: boolean,
+    code: string,
+    scope: string,
+    table: string,
+    payer: string,
+    act_data: any,
+    action_data: ActionData,
+    dgoods: Array<any>
+  }
+
   interface BlockDetailsResult {
     block_num: string,
     block_id: string,
@@ -186,6 +220,8 @@ declare namespace Postgres {
   function get_action_details(query: ActionDetailsQuery) : Promise<ActionDetailsResult>;
   function get_actions_with_filter(query: ActionsWithFilterQuery) : Promise<TransactionResult[]>;
   function get_latest_dgood_action(query: LatestDGoodActionQuery) : Promise<BlockDetailsResult | ErrorResult>;
+  function get_contract_tables(query: GetContractTables) : Promise<ContractTableResults | ErrorResult>;
+  function get_contract_rows(query: GetContractRows) : Promise<ContractRowsResults | ErrorResult>;
 
   function get_smart_contracts(query: SmartContractsQuery) : Promise<SmartContractsResult>;
   function connectToDB(query?: DBConnectionQuery) : Promise<string>

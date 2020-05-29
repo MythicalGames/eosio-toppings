@@ -10,6 +10,8 @@ const get_smart_contracts = require('./api/get_smart_contracts');
 const get_actions = require('./api/get_actions');
 const get_action_history = require('./api/get_action_history');
 const get_action_details = require('./api/get_action_details');
+const get_contract_tables = require('./api/get_contract_tables.js');
+const get_contract_rows = require('./api/get_contract_rows.js');
 const get_latest_dgood_action = require('./api/get_latest_dgood_action.js');
 const get_actions_with_filter = require('./api/get_actions_with_filter');
 const get_permissions_by_public_key = require('./api/get_permissions_by_public_key');
@@ -27,6 +29,8 @@ module.exports = {
   get_actions,
   get_action_history,
   get_action_details,
+  get_contract_tables,
+  get_contract_rows,
   get_latest_dgood_action,
   get_actions_with_filter,
   get_permissions_by_public_key,
